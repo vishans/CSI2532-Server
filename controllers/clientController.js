@@ -3,8 +3,8 @@ const { Client } = require('pg');
 exports.getRooms = async (req, res)=>{
     const { date_debut, date_fin, capacite, categorie, nombre_chambre, prix_minimum, prix_maximum } = req.query;
 
-    // Example: You can now use these variables to filter your data accordingly
-    console.log(date_debut, date_fin, capacite, categorie, nombre_chambre, prix_minimum, prix_maximum);
+    
+    // console.log(date_debut, date_fin, capacite, categorie, nombre_chambre, prix_minimum, prix_maximum);
   
     try{
         const client = new Client()
@@ -24,9 +24,6 @@ exports.getRooms = async (req, res)=>{
             )
         `
 
-
-        // const rooms = await client.query(`SELECT * FROM ehotel.hotel 
-        // ORDER BY id ASC `)
         const rooms = await client.query(query)
 
         res.json({
