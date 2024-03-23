@@ -31,3 +31,37 @@ exports.createClient = async (req, res)=>{
         })
    }
 }
+
+exports.verify = async (req, res) => {
+    const { nas } = req.query;
+    try {
+        const client = new Client();
+        client.connect();
+
+        const clientQuery = `
+            SELECT nas FROM ehotel.client WHERE nas = $1;
+        `;
+        const value = [nas];
+        const clientResult = await client.query(clientQuery, value);
+
+        const employeeQuery = `
+            SELECT nas FROM ehotel.employe WHERE nas = $1;
+        `;
+
+        const employeeResult = await client.query(employeeQuery, value);
+
+        if (clientResult.rows.length > 0) {
+            res.json({ status: "success", belongs: "client" });
+        } else if (employeeResult.rows.length > 0) {
+            res.json({ status: "success", belongs: "employee" });
+        } else {
+            res.json({ status: "success", belongs: "none" });
+        }
+    } catch (err) {
+        console.log(err);
+        res.json({
+            status: "fail",
+            message: err.name + ": " + err.message,
+        });
+    }
+};
