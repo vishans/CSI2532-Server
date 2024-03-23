@@ -11,20 +11,22 @@ exports.getRooms = async (req, res)=>{
         client.connect()
        
         const query = `
-        SELECT * FROM ehotel.chambre 
-        WHERE id NOT IN 
-            (
+            SELECT * FROM ehotel.chambre 
+            WHERE id NOT IN 
+                (
                 SELECT chambre_id FROM ehotel.reservation 
-                WHERE start_date >= '${date_debut}' AND end_date <= '${date_fin}'
-            )
-            AND capacite = ${capacite} AND prix between ${prix_minimum} and ${prix_maximum}
-            AND fid IN
-            (
-             SELECT id FROM ehotel.hotel WHERE nombre_chambre = ${nombre_chambre} AND classification = ${categorie}
-            )
-        `
+                WHERE start_date >= $1 AND end_date <= $2
+                )
+                AND capacite = $3 AND prix between $4 and $5
+                AND fid IN
+                (
+                 SELECT id FROM ehotel.hotel WHERE nombre_chambre = $6 AND classification = $7
+                )
+            `
 
-        const rooms = await client.query(query)
+        const values = [date_debut, date_fin, capacite, prix_minimum, prix_maximum, nombre_chambre, categorie];
+
+        const rooms = await client.query(query, values);
 
         res.json({
             status: 'success',
