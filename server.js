@@ -3,6 +3,7 @@ const express = require("express");
 const { Client } = require('pg');
 
 const clientRoute = require('./routes/clientRoutes');
+const hotelRoute = require('./routes/hotelRoutes');
 
 
 const client = new Client()
@@ -21,6 +22,8 @@ client.connect()
    
 
 app.use('/client', clientRoute);
+app.use('/hotel', hotelRoute);
+
 
 app.get('/', (req, res) => {
     res.status(200).send('Server OK');
