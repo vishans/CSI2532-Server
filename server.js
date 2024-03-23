@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require("express");
 const { Client } = require('pg');
+const cors=require('cors')
 
 const clientRoute = require('./routes/clientRoutes');
 const hotelRoute = require('./routes/hotelRoutes');
@@ -11,7 +12,7 @@ const client = new Client()
 
 const app = express();
 
-
+app.use(cors())
 app.use(express.json());
 
  
