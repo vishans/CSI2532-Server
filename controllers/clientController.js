@@ -42,3 +42,30 @@ exports.getRooms = async (req, res)=>{
         })
    }
 }
+
+exports.getBookings = async (req, res) => {
+    const { nas } = req.query;
+
+    try {
+        const client = new Client();
+        client.connect();
+
+        const query = `
+            SELECT * FROM ehotel.reservation
+            WHERE client_id = $1 AND status = 'Réservé';
+        `;
+        const values = [nas];
+        const bookings = await client.query(query, values);
+        res.json({
+            status: 'success',
+            length: bookings.rows.length,
+            data: bookings.rows
+        });
+    } catch (err) {
+        console.log(err);
+        res.json({
+            status: 'fail',
+            message: err.name + ": " + err.message
+        });
+    }
+}
