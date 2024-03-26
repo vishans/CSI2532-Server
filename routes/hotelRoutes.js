@@ -7,6 +7,7 @@ router.route('/createClient').post(hotelController.createClient)
 
 router.route('/verify').get(hotelController.verify)
 
+router.route('/json/createClient').post(hotelController.createClientJSON)
  
 
 
