@@ -44,3 +44,28 @@ exports.bookRoom = async (req, res) => {
         });
     }
 }
+
+exports.rentRoom = async (req, res) => {
+    const { id } = req.query;
+    try {
+        const client = new Client();
+        client.connect();
+        const query = `
+            UPDATE ehotel.reservation
+            SET status = 'Loué'
+            WHERE id = $1;
+        `;
+        const values = [id];
+        await client.query(query, values);
+        res.json({
+            status: 'success',
+            message: ''
+        });
+    } catch (err) {
+        console.log(err);
+        res.json({
+            status: 'fail',
+            message: err.name + ": " + err.message
+        });
+    }
+}
