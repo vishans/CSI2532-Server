@@ -6,6 +6,7 @@ const cors=require('cors')
 const clientRoute = require('./routes/clientRoutes');
 const hotelRoute = require('./routes/hotelRoutes');
 const employeeRoute = require('./routes/employeeRoutes');
+const roomRoute = require('./routes/roomRoutes');
 
 
 const client = new Client()
@@ -26,6 +27,7 @@ client.connect()
 app.use('/client', clientRoute);
 app.use('/hotel', hotelRoute);
 app.use('/employee', employeeRoute);
+app.use('/room', roomRoute);
 
 
 app.get('/', (req, res) => {
