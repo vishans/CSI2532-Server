@@ -70,3 +70,63 @@ exports.getBookings = async (req, res) => {
     }
 }
 
+exports.getAllBookings = async (req, res) => {
+
+
+    try {
+        const client = new Client();
+        client.connect();
+
+        const query = `
+            SELECT * FROM ehotel.reservation
+            WHERE status = 'Réservé';
+        `;
+        
+        const bookings = await client.query(query);
+
+        res.json({
+            status: 'success',
+            length: bookings.rows.length,
+            data: bookings.rows
+        });
+    } catch (err) {
+        console.log(err);
+        res.json({
+            status: 'fail',
+            message: err.name + ": " + err.message
+        });
+    }
+}
+
+
+exports.createJSONClient = async (req, res)=>{
+    const { nas, nom, prenom, adresse } = req.body;
+
+    //console.log(nas, nom, prenom, adresse)
+    try{
+        const client = new Client()
+        client.connect();
+       
+        const query = `
+            INSERT INTO ehotel.client(id, nas, nom, prenom, addresse) 
+            VALUES($1, $2, $3, $4, $5);
+        `;
+
+        const values = [nas, nas, nom, prenom, adresse]; 
+        const result = await client.query(query, values);
+
+        
+        res.json({
+            status: 'success',
+            length: result.rows.length,
+            data: result.rows
+        })
+   }
+   catch(err){
+    console.log(err)
+        res.json({
+            status: 'fail',
+            message: err.name + ": " +err.message
+        })
+   }
+}
