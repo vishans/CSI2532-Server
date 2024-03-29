@@ -6,6 +6,7 @@ router.route('/rooms/').get(clientController.getRooms);
 router.route('/bookings/').get(clientController.getBookings);
 router.route('/json/create').post(clientController.createJSONClient);
 router.route('/bookings/all').get(clientController.getAllBookings);
+router.route('/info/').get(clientController.getInfo);
 
  
 

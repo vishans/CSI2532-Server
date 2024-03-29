@@ -130,3 +130,35 @@ exports.createJSONClient = async (req, res)=>{
         })
    }
 }
+
+exports.getInfo = async (req, res)=>{
+    const { nas } = req.query;
+
+  
+    try{
+        const client = new Client()
+        client.connect()
+       
+        const query = `
+            SELECT * FROM ehotel.client 
+            WHERE nas = $1
+            `
+
+        const values = [nas];
+
+        const rooms = await client.query(query, values);
+
+        res.json({
+            status: 'success',
+            length: rooms.rows.length,
+            data: rooms.rows
+        })
+   }
+   catch(err){
+    console.log(err)
+        res.json({
+            status: 'fail',
+            message: err.name + ": " +err.message
+        })
+   }
+}
